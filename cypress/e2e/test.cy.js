@@ -4,7 +4,7 @@ it('should return the alias on the same page', () => {
   cy.wrap('some_text').as('someText')
   cy.get('a[href="/commands/querying"]:eq(4)').invoke('text').as('linkText')
 
-  // Some actions and assertions
+  // Some actions and assertions on the same page
   cy.get('.dropdown-menu').should('not.be.visible')
   cy.contains('.dropdown-toggle', 'Commands').click()
   cy.get('.dropdown-menu').should('be.visible')
@@ -25,5 +25,21 @@ it('should return the alias on another page', () => {
 
   cy.get('@someText').should('eq', 'some_text')
   // This doesn't work
+  cy.get('@linkText').should('eq', 'within')
+})
+
+it('should return the alias on another page', () => {
+  cy.visit('/')
+
+  cy.wrap('some_text').as('someText')
+  cy.get('a[href="/commands/querying"]:eq(4)').invoke('text').as('linkText')
+
+  cy.contains('Cypress API').click()
+  cy.location('pathname').should('eq', '/cypress-api')
+
+  cy.visit('/')
+
+  cy.get('@someText').should('eq', 'some_text')
+  // It does work when you return to the page
   cy.get('@linkText').should('eq', 'within')
 })
