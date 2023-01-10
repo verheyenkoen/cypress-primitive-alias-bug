@@ -28,7 +28,7 @@ it('should return the alias on another page', () => {
   cy.get('@linkText').should('eq', 'within')
 })
 
-it('should return the alias on another page', () => {
+it('should return the alias on when returning to the original page', () => {
   cy.visit('/')
 
   cy.wrap('some_text').as('someText')
