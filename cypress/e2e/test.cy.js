@@ -43,3 +43,18 @@ it('should return the alias on when returning to the original page', () => {
   // It does work when you return to the page
   cy.get('@linkText').should('eq', 'within')
 })
+
+it('should have the alias on the this-object', () => {
+  cy.visit('/')
+
+  cy.wrap('some_text').as('someText')
+  cy.get('a[href="/commands/querying"]:eq(4)').invoke('text').as('linkText')
+
+  cy.contains('Cypress API').click()
+
+  cy.get('@someText').should('eq', 'some_text')
+  // This obviously doesn't work with lambda's
+  cy.then(function () {
+    return this.linkText
+  }).should('eq', 'within')
+})
